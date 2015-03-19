@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<frame width="900" height="300">
+   <panel orientation="horizontal" background="/resources/brick.jpg">
+	   <panel orientation="vertical" maxWidth="400" background="/resources/retro-swirl.jpg">
+         <button text="Push Me" maxWidth="150" maxHeight="50" prefWidth="150" prefHeight="50"/>
+		   <strut orientation="vertical" size="10"/>
+         <button image="/resources/editIcon.png" maxWidth="150" maxHeight="50" prefWidth="150" prefHeight="50"/>
+	   </panel>
+	   <glue orientation="horizontal"/>
+	   <panel class="com.toast.swing.CustomPanel" orientation="vertical" maxWidth="400">
+	      <button id="panicButton" text="Panic" maxWidth="150" maxHeight="50" prefWidth="150" prefHeight="50"/>
+	      <strut orientation="vertical" size="10"/>
+	      <label id="customLabel" maxWidth="150" maxHeight="50" prefWidth="150" prefHeight="50"/>
+	      <strut orientation="vertical" size="10"/>
+	      <label image="/resources/retro-swirl.jpg" maxWidth="150" maxHeight="50" prefWidth="150" prefHeight="50"/>
+	   </panel>
+	</panel>
+</frame>
