@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<frame width="725" height="375">
+   <panel>
+	   <!-- Left panel containing options button and add component button -->
+	   <panel orientation="vertical" width="75" border="blue">
+	      <button image="/resources/optionsIcon.png" onclick="com.toast.swing.ClickHandler" width="75" height="50"/>
+	      <button image="/resources/addButton.png" width="75" height="75"/>
+	   </panel>
+	   <!-- Right panel containing options button and add component button -->
+      <scrollPane verticalScroll="true">
+         <panel>
+            <label image="/resources/retro-swirl.jpg" width="50" height="50"/>
+         </panel>
+      </scrollPane>
+   </panel>
+</frame>

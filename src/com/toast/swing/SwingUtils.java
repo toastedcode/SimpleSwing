@@ -2,16 +2,15 @@ package com.toast.swing;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.lang.reflect.Field;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 
 import com.toast.xml.XmlNode;
-import com.toast.xml.XmlNodeList;
 
 public class SwingUtils
 {
@@ -41,10 +40,25 @@ public class SwingUtils
    
    public static void setLayout(JComponent component, XmlNode node)
    {
-      String orientationString = XmlUtils.getString(node, "orientation", "horizontal");
-      int orientation = orientationString.equals("vertical") ? BoxLayout.Y_AXIS : BoxLayout.X_AXIS;
+      String layout = XmlUtils.getString(node,  "layout", "box");
       
-      component.setLayout(new BoxLayout(component, orientation));
+      switch (layout)
+      {
+         case "absolute":
+         {
+            component.setLayout(null);
+            break;
+         }
+         
+         case "box":
+         default:
+         {
+            String orientationString = XmlUtils.getString(node, "orientation", "horizontal");
+            int orientation = orientationString.equals("vertical") ? BoxLayout.Y_AXIS : BoxLayout.X_AXIS;
+            
+            component.setLayout(new BoxLayout(component, orientation));            
+         }
+      }
    }
    
    public static void setText(JButton component, XmlNode node)
@@ -75,39 +89,44 @@ public class SwingUtils
       }
    }
    
-   public static void createChildren(JComponent parent, XmlNode node)
+   public static Component getChildByName(Component component, String name)
    {
-      XmlNodeList childNodes = node.getNodes("./*");
-      for (int i = 0; i < childNodes.getLength(); i++)
+      Component foundComponent = null;
+      
+      if ((component.getName() != null) &&
+          (component.getName().equals(name)))
       {
-         XmlNode childNode = childNodes.item(i);
-         
-         Component child = SimpleSwing.create(childNode);
-         if (child != null)
+         foundComponent = component;
+      }
+      else if (component instanceof Container)
+      {
+         for (Component childComponent : ((Container)component).getComponents())
          {
-            parent.add(child);
-            
-            if (childNode.hasAttribute("id"))
+            foundComponent = getChildByName(childComponent, name);
+            if (foundComponent != null)
             {
-               setField(parent, child, childNode.getAttribute("id"));
+               break;
             }
          }
-      }  
+      }
+      
+      return (foundComponent);
    }
    
-   private static void setField(Component parent, Component child, String fieldName)
+   public static Component getAncestorByName(Component component, String name)
    {
-      try
+      Component foundComponent = null;
+      
+      if ((component.getName() != null) &&
+          (component.getName().equals(name)))
       {
-         Class<?> parentClass = parent.getClass();
-         
-         Field field = parentClass.getDeclaredField(fieldName);
-         
-         field.set(parent, child);
+         foundComponent = component;
       }
-      catch (NoSuchFieldException | IllegalAccessException e)
+      else if (component.getParent() != null)
       {
-         System.out.format("Failed to set field [%s].\n", fieldName);
+         foundComponent = getAncestorByName(component.getParent(), name);
       }
+      
+      return (foundComponent);
    }
 }

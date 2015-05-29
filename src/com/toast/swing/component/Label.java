@@ -1,11 +1,15 @@
-package com.toast.swing;
+package com.toast.swing.component;
 
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import com.toast.swing.Resource;
+import com.toast.swing.SwingUtils;
+import com.toast.swing.XmlUtils;
 import com.toast.xml.XmlNode;
 
 @SuppressWarnings("serial")
@@ -20,11 +24,17 @@ public class Label extends JLabel
    
    protected void setup(XmlNode node)
    {
-      // maximum width/height
-      SwingUtils.setMaximumSize(this,  node);
+      // id
+      if (node.hasAttribute("id"))
+      {
+         setName(node.getAttribute("id"));
+      }
       
-      // preferred width/height
-      SwingUtils.setPreferredSize(this,  node);
+      // size
+      int width = XmlUtils.getInt(node,  "width", Integer.MAX_VALUE);
+      int height = XmlUtils.getInt(node,  "height", Integer.MAX_VALUE);
+      setMaximumSize(new Dimension(width, height));
+      setPreferredSize(new Dimension(width, height));
       
       // text
       setText(XmlUtils.getString(node,  "text", ""));

@@ -13,6 +13,6 @@ public class GuiTest
       String filename = url.getFile();
       document.load(filename);
       
-      SimpleSwing.create(document.getRootNode());
+      SimpleSwing.create(document.getRootNode(), null);
    }
 }

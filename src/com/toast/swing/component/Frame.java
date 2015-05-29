@@ -1,9 +1,9 @@
-package com.toast.swing;
+package com.toast.swing.component;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
+import com.toast.swing.SwingUtils;
 import com.toast.xml.XmlNode;
 import com.toast.xml.XmlNodeList;
 
@@ -21,6 +21,12 @@ public class Frame extends JFrame
    {
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       
+      // id
+      if (node.hasAttribute("id"))
+      {
+         setName(node.getAttribute("id"));
+      }
+      
       SwingUtils.setSize(this, node);
       
       getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
@@ -31,9 +37,5 @@ public class Frame extends JFrame
       {
          System.out.format("Warning! Frame contains more than one content pane.\n");
       }
-      
-      this.setContentPane((JPanel)SimpleSwing.create(childNodes.item(0)));
-      
-      setVisible(true);
    }
 }

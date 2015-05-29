@@ -1,5 +1,8 @@
 package com.toast.swing;
 
+import java.awt.Color;
+import java.lang.reflect.Field;
+
 import com.toast.xml.XmlNode;
 
 public class XmlUtils
@@ -35,6 +38,26 @@ public class XmlUtils
       if (node.hasAttribute(attribute))
       {
          value = Boolean.valueOf(node.getAttribute(attribute));
+      }
+      
+      return (value);
+   }
+   
+   public static Color getColor(XmlNode node, String attribute, Color defaultValue)
+   {
+      Color value = defaultValue;
+      
+      try
+      {
+         if (node.hasAttribute(attribute))
+         {
+            Field field = Class.forName("java.awt.Color").getField(node.getAttribute(attribute).toLowerCase());
+            value = (Color)field.get(null);      
+         }
+      }
+      catch (NoSuchFieldException | ClassNotFoundException | IllegalAccessException e)
+      {
+         value = null;
       }
       
       return (value);
