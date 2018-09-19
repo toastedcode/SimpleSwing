@@ -6,12 +6,13 @@ import javax.swing.JPanel;
 
 import com.toast.swing.component.Panel;
 import com.toast.xml.XmlNode;
+import com.toast.xml.exception.XmlFormatException;
 
 @SuppressWarnings("serial")
 public class CollapsiblePanel extends Panel
 {
 
-   public CollapsiblePanel(XmlNode node)
+   public CollapsiblePanel(XmlNode node)  throws XmlFormatException
    {
       super(node);
    }

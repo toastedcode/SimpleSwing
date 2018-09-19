@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import com.toast.swing.Resource;
 import com.toast.swing.XmlUtils;
 import com.toast.xml.XmlNode;
+import com.toast.xml.exception.XmlFormatException;
 
 @SuppressWarnings("serial")
 public class Button extends JButton
@@ -23,14 +24,14 @@ public class Button extends JButton
    //
    
    //@SwingFactory(keyword = "button")
-   static Component createButton(XmlNode node)
+   static Component createButton(XmlNode node) throws XmlFormatException
    {
       JButton button = new JButton();
       
       // id
       if (node.hasAttribute("id"))
       {
-         button.setName(node.getAttribute("id"));
+         button.setName(node.getAttribute("id").getValue());
       }
       
       // size
@@ -61,19 +62,19 @@ public class Button extends JButton
       return (button);
    }
    
-   public Button(XmlNode node)
+   public Button(XmlNode node) throws XmlFormatException
    {
       super();
       
       setup(node);
    }
    
-   protected void setup(XmlNode node)
+   protected void setup(XmlNode node) throws XmlFormatException
    {
       // id
       if (node.hasAttribute("id"))
       {
-         setName(node.getAttribute("id"));
+         setName(node.getAttribute("id").getValue());
       }
       
       // size
@@ -106,7 +107,7 @@ public class Button extends JButton
       {
          try
          {
-            Class<?> listenerClass = Class.forName(node.getAttribute("onclick"));
+            Class<?> listenerClass = Class.forName(node.getAttribute("onclick").getValue());
             Constructor<?> ctor = listenerClass.getConstructor();
             ActionListener listener = (ActionListener)ctor.newInstance();
 

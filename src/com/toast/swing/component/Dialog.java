@@ -1,16 +1,17 @@
 package com.toast.swing.component;
 
-import javax.swing.BoxLayout;
 import javax.swing.JDialog;
 
 import com.toast.swing.SwingUtils;
 import com.toast.xml.XmlNode;
 import com.toast.xml.XmlNodeList;
+import com.toast.xml.exception.XPathExpressionException;
+import com.toast.xml.exception.XmlFormatException;
 
 @SuppressWarnings("serial")
 public class Dialog extends JDialog
 {
-   public Dialog(XmlNode node)
+   public Dialog(XmlNode node) throws XmlFormatException
    {
       super();
       
@@ -19,12 +20,12 @@ public class Dialog extends JDialog
       setup(node);
    }
    
-   protected void setup(XmlNode node)
+   protected void setup(XmlNode node) throws XmlFormatException
    {
       // id
       if (node.hasAttribute("id"))
       {
-         setName(node.getAttribute("id"));
+         setName(node.getAttribute("id").getValue());
       }
       
       // width, height
@@ -33,16 +34,23 @@ public class Dialog extends JDialog
       // isModal
       if (node.hasAttribute("isModal") == true)
       {
-         this.setModal(Boolean.valueOf(node.getAttribute("isModal")));
+         this.setModal(node.getAttribute("isModal").getBoolValue());
       }
       
       //getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
       
-      XmlNodeList childNodes = node.getNodes("./*");
-      
-      if (childNodes.getLength() > 1)
+      try
       {
-         System.out.format("Warning! Frame contains more than one content pane.\n");
+         XmlNodeList childNodes = node.getNodes("./*");
+         
+         if (childNodes.size() > 1)
+         {
+            System.out.format("Warning! Frame contains more than one content pane.\n");
+         }
+      }
+      catch (XPathExpressionException e)
+      {
+         // TODO
       }
    }
 }

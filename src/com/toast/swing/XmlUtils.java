@@ -4,16 +4,21 @@ import java.awt.Color;
 import java.lang.reflect.Field;
 
 import com.toast.xml.XmlNode;
+import com.toast.xml.exception.XmlFormatException;
 
 public class XmlUtils
 {
    public static int getInt(XmlNode node, String attribute, int defaultValue)
    {
       int value = defaultValue;
-      
-      if (node.hasAttribute(attribute))
+
+      try
       {
-         value = Integer.valueOf(node.getAttribute(attribute));
+         value = node.getAttribute(attribute).getIntValue();
+      }
+      catch (XmlFormatException e)
+      {
+         // Go with default value.
       }
       
       return (value);
@@ -23,9 +28,13 @@ public class XmlUtils
    {
       String value = defaultValue;
       
-      if (node.hasAttribute(attribute))
+      try
       {
-         value = node.getAttribute(attribute);
+         value = node.getAttribute(attribute).getValue();
+      }
+      catch (XmlFormatException e)
+      {
+         // Go with default value.
       }
       
       return (value);
@@ -35,9 +44,13 @@ public class XmlUtils
    {
       boolean value = defaultValue;
       
-      if (node.hasAttribute(attribute))
+      try
       {
-         value = Boolean.valueOf(node.getAttribute(attribute));
+         value = node.getAttribute(attribute).getBoolValue();
+      }
+      catch (XmlFormatException e)
+      {
+         // Go with default value.
       }
       
       return (value);
@@ -49,13 +62,10 @@ public class XmlUtils
       
       try
       {
-         if (node.hasAttribute(attribute))
-         {
-            Field field = Class.forName("java.awt.Color").getField(node.getAttribute(attribute).toLowerCase());
-            value = (Color)field.get(null);      
-         }
+         Field field = Class.forName("java.awt.Color").getField(node.getAttribute(attribute).getValue().toLowerCase());
+         value = (Color)field.get(null);      
       }
-      catch (NoSuchFieldException | ClassNotFoundException | IllegalAccessException e)
+      catch (NoSuchFieldException | ClassNotFoundException | IllegalAccessException | XmlFormatException e)
       {
          value = null;
       }

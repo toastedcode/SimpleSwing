@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 
 import com.toast.xml.XmlNode;
+import com.toast.xml.exception.XmlFormatException;
 
 public class SwingUtils
 {
@@ -66,7 +67,7 @@ public class SwingUtils
       component.setText(XmlUtils.getString(node,  "text", ""));
    }
    
-   public static void setBorder(JComponent component, XmlNode node)
+   public static void setBorder(JComponent component, XmlNode node) throws XmlFormatException
    {
       if (node.hasAttribute("border"))
       {
@@ -74,12 +75,12 @@ public class SwingUtils
          
          try
          {
-             Field field = Class.forName("java.awt.Color").getField(node.getAttribute("border"));
+             Field field = Class.forName("java.awt.Color").getField(node.getAttribute("border").getValue());
              color = (Color)field.get(null);
          }
          catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e)
          {
-            System.out.format("Could not create border of color [%s].\n", node.getAttribute("border"));
+            System.out.format("Could not create border of color [%s].\n", node.getAttribute("border").getValue());
          }
          
          if (color != null)

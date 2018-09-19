@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import com.toast.xml.XmlDocument;
+import com.toast.xml.exception.XmlParseException;
 
 public class Resource
 {
@@ -75,10 +76,10 @@ public class Resource
       
       try
       {
-         document.load(Resource.class.getResourceAsStream(name));
+         document.load(name);
          documents.put(name,  document);
       }
-      catch (IllegalArgumentException e)
+      catch (IllegalArgumentException | IOException | XmlParseException e)
       {
          System.out.printf("Failed to load %s\n.", name);
          document = null;

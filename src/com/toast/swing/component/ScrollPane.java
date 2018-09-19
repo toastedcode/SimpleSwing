@@ -7,23 +7,24 @@ import javax.swing.JScrollPane;
 import com.toast.swing.SwingUtils;
 import com.toast.swing.XmlUtils;
 import com.toast.xml.XmlNode;
+import com.toast.xml.exception.XmlFormatException;
 
 @SuppressWarnings("serial")
 public class ScrollPane extends JScrollPane
 {
-   public ScrollPane(XmlNode node)
+   public ScrollPane(XmlNode node) throws XmlFormatException
    {
       super();
       
       setup(node);
    }
 
-   protected void setup(XmlNode node)
+   protected void setup(XmlNode node) throws XmlFormatException
    {
       // id
       if (node.hasAttribute("id"))
       {
-         setName(node.getAttribute("id"));
+         setName(node.getAttribute("id").getValue());
       }
       
       // size
@@ -34,7 +35,7 @@ public class ScrollPane extends JScrollPane
       // horizontalScroll
       if (node.hasAttribute("horizontalScroll"))
       {
-         if (Boolean.valueOf(node.getAttribute("horizontalScroll")) == true)
+         if (Boolean.valueOf(node.getAttribute("horizontalScroll").getValue()) == true)
          {
             setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);         
          }
@@ -47,7 +48,7 @@ public class ScrollPane extends JScrollPane
       // verticalScroll
       if (node.hasAttribute("verticalScroll"))
       {
-         if (Boolean.valueOf(node.getAttribute("verticalScroll")) == true)
+         if (node.getAttribute("verticalScroll").getBoolValue() == true)
          {
             setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);         
          }

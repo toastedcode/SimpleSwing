@@ -8,14 +8,15 @@ import java.lang.reflect.Method;
 import java.util.StringTokenizer;
 
 import com.toast.xml.XmlNode;
+import com.toast.xml.exception.XmlFormatException;
 
 public class ListenerUtils
 {
-   public static void setListeners(final Component component, XmlNode node)
+   public static void setListeners(final Component component, XmlNode node) throws XmlFormatException
    {
       if (node.hasAttribute("onMouseClick"))
       {
-         StringTokenizer tokenizer = new StringTokenizer(node.getAttribute("onMouseClick"), ".");
+         StringTokenizer tokenizer = new StringTokenizer(node.getAttribute("onMouseClick").getValue(), ".");
          
          if (tokenizer.countTokens() <= 2)
          {
@@ -44,7 +45,7 @@ public class ListenerUtils
       
       if (node.hasAttribute("onMouseOver"))
       {
-         StringTokenizer tokenizer = new StringTokenizer(node.getAttribute("onMouseOver"), ".");
+         StringTokenizer tokenizer = new StringTokenizer(node.getAttribute("onMouseOver").getValue(), ".");
          
          if (tokenizer.countTokens() <= 2)
          {
@@ -62,18 +63,18 @@ public class ListenerUtils
             }
             else
             {
-               System.out.format("Invalid listener [%s].\n", node.getAttribute("onMouseOver"));               
+               System.out.format("Invalid listener [%s].\n", node.getAttribute("onMouseOver").getValue());               
             }            
          }
          else
          {
-            System.out.format("Invalid listener [%s].\n", node.getAttribute("onMouseOver"));            
+            System.out.format("Invalid listener [%s].\n", node.getAttribute("onMouseOver").getValue());            
          }
       }
       
       if (node.hasAttribute("onMouseOut"))
       {
-         StringTokenizer tokenizer = new StringTokenizer(node.getAttribute("onMouseOut"), ".");
+         StringTokenizer tokenizer = new StringTokenizer(node.getAttribute("onMouseOut").getValue(), ".");
          
          if (tokenizer.countTokens() <= 2)
          {

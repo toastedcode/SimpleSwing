@@ -10,11 +10,12 @@ import com.toast.swing.Resource;
 import com.toast.swing.SwingUtils;
 import com.toast.swing.XmlUtils;
 import com.toast.xml.XmlNode;
+import com.toast.xml.exception.XmlFormatException;
 
 @SuppressWarnings("serial")
 public class Panel extends JPanel
 {
-   public Panel(XmlNode node)
+   public Panel(XmlNode node) throws XmlFormatException
    {
       super();
       
@@ -26,7 +27,7 @@ public class Panel extends JPanel
       backgroundImage = image;
    }
    
-   protected void setup(XmlNode node)
+   protected void setup(XmlNode node) throws XmlFormatException
    {
       SwingUtils.setLayout(this, node);
       
@@ -35,7 +36,7 @@ public class Panel extends JPanel
       // id
       if (node.hasAttribute("id"))
       {
-         setName(node.getAttribute("id"));
+         setName(node.getAttribute("id").getValue());
       }
       
       // size
@@ -51,7 +52,7 @@ public class Panel extends JPanel
       
       if (node.hasAttribute("background"))
       {
-         BufferedImage image = Resource.getImage(node.getAttribute("background"));
+         BufferedImage image = Resource.getImage(node.getAttribute("background").getValue());
          if (image  != null)
          {
             backgroundImage = image;

@@ -7,12 +7,13 @@ import javax.swing.JOptionPane;
 
 import com.toast.swing.component.Panel;
 import com.toast.xml.XmlNode;
+import com.toast.xml.exception.XmlFormatException;
 
 @SuppressWarnings("serial")
 public class CustomPanel extends Panel
 {
 
-   public CustomPanel(XmlNode node)
+   public CustomPanel(XmlNode node) throws XmlFormatException
    {
       super(node);
 

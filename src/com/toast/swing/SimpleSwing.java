@@ -23,15 +23,17 @@ import com.toast.swing.component.ScrollPane;
 import com.toast.swing.component.TextField;
 import com.toast.xml.XmlNode;
 import com.toast.xml.XmlNodeList;
+import com.toast.xml.exception.XPathExpressionException;
+import com.toast.xml.exception.XmlFormatException;
 
 public class SimpleSwing
 {
-   public static Component create(XmlNode node)
+   public static Component create(XmlNode node) throws XmlFormatException
    {
       return (create(node, null));
    }
    
-   public static Component create(XmlNode node, Component parent)
+   public static Component create(XmlNode node, Component parent) throws XmlFormatException
    {
       Component component = null;
       
@@ -61,7 +63,7 @@ public class SimpleSwing
                   // Create a custom SimpleSwing components.
                   //
                   
-                  componentClass = Class.forName(node.getAttribute("class"));               
+                  componentClass = Class.forName(node.getAttribute("class").getValue());               
                }
                else
                {
@@ -121,7 +123,7 @@ public class SimpleSwing
             // Set fields.
             if (node.hasAttribute("id"))
             {
-               setField(component, node.getAttribute("id"));
+               setField(component, node.getAttribute("id").getValue());
             }
             
             // Set listeners.
@@ -151,7 +153,7 @@ public class SimpleSwing
       return (componentClasses.get(className));
    }
    
-   private static Component createFrame(XmlNode node)
+   private static Component createFrame(XmlNode node) throws XmlFormatException
    {
       JFrame frame = new Frame(node);
       
@@ -199,15 +201,22 @@ public class SimpleSwing
       return (component);      
    }
    
-   private static void createChildren(Component parent, XmlNode node)
+   private static void createChildren(Component parent, XmlNode node) throws XmlFormatException
    {
-      XmlNodeList childNodes = node.getNodes("./*");
-      for (int i = 0; i < childNodes.getLength(); i++)
+      try
       {
-         XmlNode childNode = childNodes.item(i);
-         
-         SimpleSwing.create(childNode, parent);
-      }  
+         XmlNodeList childNodes = node.getNodes("./*");
+         for (int i = 0; i < childNodes.size(); i++)
+         {
+            XmlNode childNode = childNodes.get(i);
+            
+            SimpleSwing.create(childNode, parent);
+         }
+      }
+      catch (XPathExpressionException e)
+      {
+         // TODO
+      }
    }
    
    private static void setField(Component child, String fieldName)
